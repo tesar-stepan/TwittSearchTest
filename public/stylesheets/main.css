@@ -1,0 +1,50 @@
+*{
+    /*Remove all bootstrap round edges*/
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+body{
+    /*noinspection CssUnknownTarget*/
+    background: url("/assets/images/sky.jpg") no-repeat fixed;
+    background-size: cover;
+}
+
+h2{
+    color: white;
+    font-weight: bold;
+}
+
+.list_column{
+    width: 100%;
+}
+
+.jumbotron{
+    color: white;
+    background-color: #2b669a;
+    background-color: rgba(43, 102, 153, 0.9);
+}
+
+.footer, .panel, .panel-body{
+    background-color: white;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Sticky footer styles | http://getbootstrap.com/examples/sticky-footer/sticky-footer.css
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 100px;
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 100px;
+}
