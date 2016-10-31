@@ -35,8 +35,6 @@ public class Application extends Controller{
 
     @Transactional
     public Result addSearchQuery() {
-        System.out.println(formFactory.form().bindFromRequest().data());
-
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String text = requestData.get("text");
         SearchQuery searchQuery = new SearchQuery();
