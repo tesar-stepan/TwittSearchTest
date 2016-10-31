@@ -1,0 +1,52 @@
+@(content: Html)(implicit messages: Messages)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@Messages("title.main")</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <link rel="stylesheet" href="@routes.Assets.at("bootstrap/css/bootstrap.css")">
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+        <script src="@routes.Assets.at("javascripts/jquery-2.2.0.min.js")" type="text/javascript"></script>
+        <script type='text/javascript' src='@routes.Assets.at("bootstrap/js/bootstrap.js")'></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    </head>
+    <body>
+        <div class="jumbotron">
+            <div class="container">
+                <h1>
+                    <span class="glyphicon glyphicon-search"></span>
+                    @Messages("title.main")
+                </h1>
+            </div>
+        </div>
+
+        <div class="container">
+        @content
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <span class="row small">
+                    <div class="row">
+                        <div class="col-xs-4 text-left">
+                            <a href="@Messages("my.mail")">@Messages("my.name")</a>
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            <a href="http://twitter4j.org/">
+                                <img src="@routes.Assets.at("images/powered-by-twitter4j-138x30.png")" border="0" width="138" height="30">
+                            </a>
+                        </div>
+                        <div class="col-xs-4 text-right">
+                            @Messages("bg.credit.title")
+                            <a href="@Messages("bg_credit_link")" target="_blank">@Messages("bg.credit.text")</a>
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </footer>
+
+    </body>
+</html>

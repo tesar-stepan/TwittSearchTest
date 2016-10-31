@@ -1,0 +1,22 @@
+@import java.util
+@(searchResults: util.List[SearchQuery])(implicit messages: Messages)
+    <!-- TODO change the List type to search results -->
+
+    <!-- TODO change to actual twitter post list with customisable pagination -->
+
+    <h2>@Messages("title.search.results", "BLEBLE")</h2>
+
+    @for(searchQuery <- searchResults) {
+    <div class="panel">
+        <div class="panel-body">
+            <div id="persons" class="btn-group btn-group-vertical list_column">
+
+                <button type="button" class="btn btn-default text-left" name="search_@searchQuery.text" id="@searchQuery.id">
+                    <div class="text-left">
+                    @searchQuery.text
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    }

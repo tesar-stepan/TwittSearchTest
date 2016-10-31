@@ -1,0 +1,20 @@
+@import java.util
+@(searchHistory: util.List[SearchQuery])(implicit messages: Messages)
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>@Messages("title.recent.list")</h3>
+    </div>
+    <div class="panel-body">
+        <div id="persons" class="btn-group btn-group-vertical list_column">
+            @for(searchQuery <- searchHistory) {
+                <button type="button" class="btn btn-default text-left" name="search_@searchQuery.text" id="@searchQuery.id">
+                    <div class="text-left">
+                        <span class="glyphicon glyphicon-search"></span>
+                        @searchQuery.text
+                    </div>
+                </button>
+            }
+        </div>
+    </div>
+</div>

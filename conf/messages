@@ -1,0 +1,16 @@
+#titles
+title.main = TwittSearch
+title.recent.list = People recently searched for:
+title.search.results = Search results for {0}:
+
+#forms
+form.ph.search = Text to search for
+form.btn.search = Search Twitter!
+
+#random
+bg.credit.title = Background photo credit:
+bg_credit_link = http://barnimages.com/
+bg.credit.text = @barnimages
+
+my.mail = mailto:tesar.stepann@gmail.com
+my.name = @Tesar.St.
