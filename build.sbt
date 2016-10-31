@@ -8,9 +8,9 @@ scalaVersion := "2.11.8"
 
 libraryDependencies ++= Seq( jdbc , cache , ws   , specs2 % Test )
 
-//unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
+unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
-//resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
+resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
 libraryDependencies += javaJpa
 

@@ -29,7 +29,7 @@ public class Application extends Controller{
 
     @Transactional
     public Result index() {
-        return ok(views.html.index.render(this.getSearchQueryList(), ));
+        return ok(views.html.index.render(this.getSearchQueryList()));
     }
 
     @Transactional
