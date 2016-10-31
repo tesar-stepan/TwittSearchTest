@@ -1,5 +1,6 @@
 package models;
 
+import play.data.validation.Constraints;
 import javax.persistence.*;
 
 /**
@@ -14,5 +15,6 @@ public class SearchQuery {
     @GeneratedValue(strategy=GenerationType.AUTO)
     public Long id;
 
+    @Constraints.Required
     public String text;
 }

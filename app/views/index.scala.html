@@ -10,9 +10,9 @@
                 <div class="panel-body">
                     <form class="form-inline" method="POST" action="@routes.Application.addSearchQuery()">
                         <div class="input-group input-group-lg">
-                            <label for="input_searchQuery_text" hidden>Search for: </label>
+                            <label for="text" hidden>Search for: </label>
                             <div class="form-group form-group-lg">
-                                <input type="text" class="form-control input-lg" id="input_searchQuery_text" placeholder="@Messages("form.ph.search")" name="text" required>
+                                <input type="text" class="form-control input-lg" id="text" placeholder="@Messages("form.ph.search")" name="text" required>
                                 <button type="submit" class="form-control btn btn-primary input-lg">@Messages("form.btn.search")</button>
                             </div>
                         </div>

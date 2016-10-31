@@ -1,6 +1,7 @@
 package controllers;
 
 import models.SearchQuery;
+import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
@@ -34,7 +35,17 @@ public class Application extends Controller{
 
     @Transactional
     public Result addSearchQuery() {
-        SearchQuery searchQuery = formFactory.form(SearchQuery.class).bindFromRequest().get();
+        System.out.println(formFactory.form().bindFromRequest().data());
+
+        DynamicForm requestData = formFactory.form().bindFromRequest();
+        String text = requestData.get("text");
+        SearchQuery searchQuery = new SearchQuery();
+        searchQuery.text = text;
+        //TODO remove the above binding workaround
+        //TODO automatic binding (commented out code below) from the request does not work for some reason - fix it.
+        //SearchQuery searchQuery = formFactory.form(SearchQuery.class).bindFromRequest().get();
+        //System.out.println(formFactory.form(SearchQuery.class).data());
+
         jpaApi.em().persist(searchQuery);
         return redirect(routes.Application.index()); //TODO redirect to search results page
     }
