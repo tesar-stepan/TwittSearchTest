@@ -35,32 +35,29 @@ public class Application extends Controller{
 
     @Transactional
     public Result index(String search, int count, int page){
-        if(search != null){
-            try {
-                foundTweets = TwitterHandler.getInstance().Search(search);
-            } catch (TwitterException e) {
-                return ok(views.html.index.render(this.getSearchQueryList(), search, null, e.getMessage(), count, page));
-            }
-        }
-
-        return page(search, count, page);
-    }
-
-    @Transactional
-    public Result page(String search, int count, int page){
         List<Status> pageTweets = null;
+        int maxPage = 1;
         if(foundTweets != null) {
-            int from = ((page - 1) * count) + 1;
-            int to = page * count;
+            int from = ((page - 1) * count);
+            int to = Math.min( (page * count) - 1, foundTweets.size()-1);
             pageTweets = foundTweets.subList(from, to);
+            maxPage = foundTweets.size()/count;
         }
-        return ok(views.html.index.render(this.getSearchQueryList(), search, pageTweets, null, count, page));
+        return ok(views.html.index.render(this.getSearchQueryList(), search, pageTweets, null, count, page, maxPage));
     }
 
     @Transactional
     public Result doSearch() {
         String search = this.persistQueryAndGetText();
         int count = this.getCount();
+
+        if(search != null){
+            try {
+                foundTweets = TwitterHandler.getInstance().Search(search);
+            } catch (TwitterException e) {
+                return ok(views.html.index.render(this.getSearchQueryList(), search, null, e.getMessage(), count, 1, 1));
+            }
+        }
         return redirect(routes.Application.index(search, count, 1));
     }
 

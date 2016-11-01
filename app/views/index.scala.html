@@ -1,7 +1,15 @@
 @import java.util
 @import play.api.i18n.Messages
 
-@(searchHistory: util.List[SearchQuery], search: String, foundTweets: util.List[twitter4j.Status], errorMsg: String, count: Int, page: Int)
+@(
+        searchHistory: util.List[SearchQuery],
+        search: String,
+        foundTweets: util.List[twitter4j.Status],
+        errorMsg: String,
+        count: Int,
+        page: Int,
+        maxPage: Int
+)
 
 @main {
     <div class="col-sm-7">
