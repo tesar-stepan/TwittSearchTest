@@ -1,14 +1,14 @@
 @import java.util
 @import play.api.i18n.Messages
 
-@(searchHistory: util.List[SearchQuery])
+@(searchHistory: util.List[SearchQuery], search: String, foundTweets: util.List[twitter4j.Status], errorMsg: String)
 
 @main {
     <div class="col-sm-7">
         <div class="row">
             <div class="panel panel-primary">
                 <div class="panel-body">
-                    <form class="form-inline" method="POST" action="@routes.Application.addSearchQuery()">
+                    <form class="form-inline" method="POST" action="@routes.Application.doSearch()">
                         <div class="input-group input-group-lg">
                             <label for="text" hidden>Search for: </label>
                             <div class="form-group form-group-lg">
@@ -21,9 +21,18 @@
             </div>
         </div>
 
-        <div class="row">
-        @results(searchHistory)
-        </div>
+        @if(search != null) {
+            <div class="row">
+                @results(foundTweets, search)
+            </div>
+        }
+
+        @if(errorMsg != null){
+            <div class="panel panel-danger">
+                <div class="panel-heading">@Messages("error.title")</div>
+                <div class="panel-body">@errorMsg</div>
+            </div>
+        }
 
     </div>
 

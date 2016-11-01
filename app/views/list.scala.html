@@ -8,14 +8,17 @@
         <h3>@Messages("title.recent.list")</h3>
     </div>
     <div class="panel-body">
-        <div id="persons" class="btn-group btn-group-vertical list_column">
+        <div id="search_history" class="btn-group btn-group-vertical list_column">
             @for(searchQuery <- searchHistory) {
-                <button type="button" class="btn btn-default text-left" name="search_@searchQuery.text" id="@searchQuery.id">
-                    <div class="text-left">
-                        <span class="glyphicon glyphicon-search"></span>
-                        @searchQuery.text
-                    </div>
-                </button>
+                <form class="form block" method="POST" action="@routes.Application.doSearch()">
+                    <input type="hidden" value="@searchQuery.text" name="text" id="text">
+                    <button type="sumbit" class="btn btn-default text-left input-block-level" name="search_@searchQuery.text" id="@searchQuery.id">
+                        <div class="text-left">
+                            <span class="glyphicon glyphicon-search"></span>
+                            @searchQuery.text
+                        </div>
+                    </button>
+                </form>
             }
         </div>
     </div>

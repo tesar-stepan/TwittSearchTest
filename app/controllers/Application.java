@@ -7,6 +7,8 @@ import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
+import twitter4j.Status;
+import twitter4j.TwitterException;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -19,6 +21,8 @@ import static play.libs.Json.toJson;
  * Main application controller.
  */
 public class Application extends Controller{
+    private final static int HISTORY_DISPLAY_SIZE = 20;
+
     private final FormFactory formFactory;
     private final JPAApi jpaApi;
 
@@ -29,12 +33,32 @@ public class Application extends Controller{
     }
 
     @Transactional
-    public Result index() {
-        return ok(views.html.index.render(this.getSearchQueryList()));
+    public Result index(String search){
+        List<Status> foundTweets = null;
+        if(search != null){
+            try {
+                foundTweets = TwitterHandler.getInstance().Search(search);
+            } catch (TwitterException e) {
+                return ok(views.html.index.render(this.getSearchQueryList(), search, null, e.getErrorMessage()));
+            }
+        }
+        return ok(views.html.index.render(this.getSearchQueryList(), search, foundTweets, null));
     }
 
     @Transactional
-    public Result addSearchQuery() {
+    public Result doSearch() {
+        String search = this.persistQueryAndGetText();
+        return redirect(routes.Application.index(search));
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<SearchQuery> getSearchQueryList(){
+        return jpaApi.em()
+                .createQuery("select p from SearchQuery p order by id desc")
+                .setMaxResults(HISTORY_DISPLAY_SIZE).getResultList();
+    }
+
+    private String persistQueryAndGetText(){
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String text = requestData.get("text");
         SearchQuery searchQuery = new SearchQuery();
@@ -45,18 +69,7 @@ public class Application extends Controller{
         //System.out.println(formFactory.form(SearchQuery.class).data());
 
         jpaApi.em().persist(searchQuery);
-        return redirect(routes.Application.index()); //TODO redirect to search results page
-    }
-
-    @Transactional(readOnly = true)
-    public Result getSearchQueries() {
-        List<SearchQuery> persons = this.getSearchQueryList();
-        return ok(toJson(persons));
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<SearchQuery> getSearchQueryList(){
-        return jpaApi.em().createQuery("select p from SearchQuery p").getResultList();
+        return text;
     }
 }
 

@@ -7,6 +7,9 @@ title.search.results = Search results for {0}:
 form.ph.search = Text to search for
 form.btn.search = Search Twitter!
 
+#error messages
+error.title = "Something went wrong"
+
 #random
 bg.credit.title = Background photo credit:
 bg_credit_link = http://barnimages.com/

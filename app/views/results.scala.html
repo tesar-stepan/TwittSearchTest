@@ -1,24 +1,36 @@
 @import java.util
+@import java.text.DateFormat
 @import play.api.i18n.Messages
 
-@(searchResults: util.List[SearchQuery])
-    <!-- TODO change the List type to search results -->
+@(searchResults: util.List[twitter4j.Status], search: String)
 
-    <!-- TODO change to actual twitter post list with customisable pagination -->
+    <h2>@Messages("title.search.results", search)</h2>
 
-    <h2>@Messages("title.search.results", "BLEBLE")</h2>
-
-    @for(searchQuery <- searchResults) {
-    <div class="panel">
-        <div class="panel-body">
-            <div id="persons" class="btn-group btn-group-vertical list_column">
-
-                <button type="button" class="btn btn-default text-left" name="search_@searchQuery.text" id="@searchQuery.id">
-                    <div class="text-left">
-                    @searchQuery.text
+    @if(searchResults != null){
+        @for(status <- searchResults) {
+        <div class="panel">
+            <div class="panel-body">
+                <div class="col-xs-2">
+                    <a target="_blank" href="https://twitter.com/@status.getUser().getScreenName()">
+                        <img src="@status.getUser().getProfileImageURL()" alt="@status.getUser().getScreenName()">
+                    </a>
+                </div>
+                <div class="col-xs-10 text-left">
+                    @status.getText()
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <a target="_blank" href="https://twitter.com/@status.getUser().getScreenName()">
+                            @@@status.getUser().getScreenName()
+                        </a>
                     </div>
-                </button>
+                    <div class="col-xs-9 text-right">
+                        @DateFormat.getDateInstance(DateFormat.SHORT, lang.toLocale).format(status.getCreatedAt())
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+        }
     }
