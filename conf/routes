@@ -3,7 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index(search: String ?= null)
+GET     /                           controllers.Application.index(search: String ?= null, count: Int ?= 15, page: Int ?= 1)
+GET     /page                       controllers.Application.page(search: String ?= null, count: Int ?= 15, page: Int ?= 1)
 POST    /search                     controllers.Application.doSearch()
 
 # Map static resources from the /public folder to the /assets URL path

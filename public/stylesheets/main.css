@@ -39,6 +39,10 @@ h2{
    box-sizing: border-box; /* Makes inputs behave like true block-level elements */
 }
 
+.hide-overflow{
+    overflow: hidden;
+}
+
 /* Sticky footer styles | http://getbootstrap.com/examples/sticky-footer/sticky-footer.css
 -------------------------------------------------- */
 html {

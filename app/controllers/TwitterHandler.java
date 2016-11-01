@@ -11,6 +11,7 @@ import java.util.List;
  * Singleton class handling access to Twitter API.
  */
 public class TwitterHandler {
+    private static final int TWEET_COUNT = 1500;
     private static final String CONSUMER_KEY = "8tzMzg6JR3WVJqxWZqIiisQQj";
     private static final String CONSUMER_SECRET = "nOfUn4VlYN9v8reORaJXBoV6zxg7BcTyw1jo1k9Ip2qxid9Cgp";
     private static final String ACCESS_TOKEN = "193733891-2APgh8RKtfQqSm8VODAkfDZcM40g5zyicQUleAKj";
@@ -34,6 +35,7 @@ public class TwitterHandler {
 
     public List<Status> Search(String query) throws TwitterException {
         Query twitterQuery = new Query(query);
+        twitterQuery.setCount(TWEET_COUNT);
         QueryResult result =  twitter.search(twitterQuery);
         return result.getTweets();
     }

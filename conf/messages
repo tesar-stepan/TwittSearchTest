@@ -5,6 +5,7 @@ title.search.results = Search results for {0}:
 
 #forms
 form.ph.search = Text to search for
+form.ph.count = 15
 form.btn.search = Search Twitter!
 
 #error messages

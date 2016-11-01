@@ -1,7 +1,7 @@
 @import java.util
 @import play.api.i18n.Messages
 
-@(searchHistory: util.List[SearchQuery], search: String, foundTweets: util.List[twitter4j.Status], errorMsg: String)
+@(searchHistory: util.List[SearchQuery], search: String, foundTweets: util.List[twitter4j.Status], errorMsg: String, count: Int, page: Int)
 
 @main {
     <div class="col-sm-7">
@@ -12,8 +12,9 @@
                         <div class="input-group input-group-lg">
                             <label for="text" hidden>Search for: </label>
                             <div class="form-group form-group-lg">
-                                <input type="text" class="form-control input-lg" id="text" placeholder="@Messages("form.ph.search")" name="text" required>
-                                <button type="submit" class="form-control btn btn-primary input-lg">@Messages("form.btn.search")</button>
+                                <input type="text" class="input-lg" id="text" value="@search" placeholder="@Messages("form.ph.search")" name="text" required>
+                                <input type="number" class="input-lg" id="count" value="@count" name="count" min="1" max="100" required>
+                                <button type="submit" class="btn btn-primary input-lg"><strong>@Messages("form.btn.search")</strong></button>
                             </div>
                         </div>
                     </form>
