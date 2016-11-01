@@ -8,7 +8,7 @@ form.ph.search = Text to search for
 form.btn.search = Search Twitter!
 
 #error messages
-error.title = "Something went wrong"
+error.title = Something went wrong :(
 
 #random
 bg.credit.title = Background photo credit:

@@ -13,8 +13,6 @@ import twitter4j.TwitterException;
 import javax.inject.Inject;
 import java.util.List;
 
-import static play.libs.Json.toJson;
-
 /**
  * Created by TesarStepan on 30. 10. 2016.
  *
@@ -39,7 +37,7 @@ public class Application extends Controller{
             try {
                 foundTweets = TwitterHandler.getInstance().Search(search);
             } catch (TwitterException e) {
-                return ok(views.html.index.render(this.getSearchQueryList(), search, null, e.getErrorMessage()));
+                return ok(views.html.index.render(this.getSearchQueryList(), search, null, e.getMessage()));
             }
         }
         return ok(views.html.index.render(this.getSearchQueryList(), search, foundTweets, null));
