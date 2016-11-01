@@ -12,11 +12,11 @@
             @for(searchQuery <- searchHistory) {
                 <form class="form block" method="POST" action="@routes.Application.doSearch()">
                     <input type="hidden" value="@searchQuery.text" name="text" id="text">
-                    <button type="sumbit" class="btn btn-default text-left input-block-level hide-overflow" name="search_@searchQuery.text" id="@searchQuery.id">
-                        <div class="text-left">
+                    <button type="submit" class="btn btn-default text-left input-block-level hide-overflow" name="search_@searchQuery.text" id="@searchQuery.id">
+                        <span class="text-left">
                             <span class="glyphicon glyphicon-search"></span>
                             @searchQuery.text
-                        </div>
+                        </span>
                     </button>
                 </form>
             }

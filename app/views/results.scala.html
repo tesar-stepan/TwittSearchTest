@@ -10,21 +10,18 @@
         maxPage: Int
 )
 
-@defining(12) { pages_left => @pages_left }
-@defining(12) { pages_right => @pages_right }
+@pAddLeft = @{ Math.max(-(maxPage - (page+4)), 0) }
+@pAddRight = @{ Math.max(5-page, 0) }
 
     <h2>@Messages("title.search.results", search)</h2>
 
     @if(maxPage > 1) {
         <div class="row text-center">
-        @if(page == 1){
-            <button type="button" class="btn btn-lg btn-primary">1</button>
-        }else{
-            <a href="@routes.Application.index(search, count, 1)">
-                <button type="button" class="btn btn-lg btn-default">1</button>
-            </a>
+
+        @if(page > 5){
+            <span class="glyphicon glyphicon-circle-arrow-left"></span>
         }
-        @for(p <- Math.max(page - 3, 1) until Math.min(page + 3, maxPage-1)) {
+        @for(p <- Math.max(page - 5 - pAddLeft, 0) until Math.min(page + 4 + pAddRight, maxPage)) {
             @if(p == (page-1)){
                 <button type="button" class="btn btn-lg btn-primary">@(p+1)</button>
             }else {
@@ -34,12 +31,8 @@
             }
         }
 
-        @if(page == maxPage){
-            <button type="button" class="btn btn-lg btn-primary">@maxPage</button>
-        }else{
-            <a href="@routes.Application.index(search, count, maxPage)">
-                <button type="button" class="btn btn-lg btn-default">@maxPage</button>
-            </a>
+        @if(maxPage-page > 4){
+            <span class="glyphicon glyphicon-circle-arrow-right"></span>
         }
         </div>
     }
@@ -49,23 +42,23 @@
         <div class="panel">
             <div class="panel-body">
                 <div class="col-xs-2">
-                    <a target="_blank" href="https://twitter.com/@status.getUser().getScreenName()">
-                        <img src="@status.getUser().getProfileImageURL()" alt="@status.getUser().getScreenName()">
+                    <a target="_blank" href="https://twitter.com/@status.getUser.getScreenName">
+                        <img src="@status.getUser.getProfileImageURL" alt="@status.getUser.getScreenName">
                     </a>
                 </div>
                 <div class="col-xs-10 text-left">
-                    @status.getText()
+                    @status.getText
                 </div>
             </div>
             <div class="panel-footer">
                 <div class="row">
                     <div class="col-xs-3">
-                        <a target="_blank" href="https://twitter.com/@status.getUser().getScreenName()">
-                            @@@status.getUser().getScreenName()
+                        <a target="_blank" href="https://twitter.com/@status.getUser.getScreenName">
+                            @@@status.getUser.getScreenName
                         </a>
                     </div>
                     <div class="col-xs-9 text-right">
-                        @DateFormat.getDateInstance(DateFormat.SHORT, lang.toLocale).format(status.getCreatedAt())
+                        @DateFormat.getDateInstance(DateFormat.SHORT, lang.toLocale).format(status.getCreatedAt)
                     </div>
                 </div>
             </div>
