@@ -19,7 +19,16 @@ import java.util.List;
  * Main application controller.
  */
 public class Application extends Controller{
+    /**
+     * Controls the amount of queries displayed in the history panel.
+     */
     private final static int HISTORY_DISPLAY_SIZE = 20;
+
+    /**
+     * default amount of tweets displayed per page.
+     * This is also the same amount that twitter queries default to when there is no
+     * amount specified.
+     */
     private final static int DEFAULT_TWEET_PPG = 15;
     private final static String NO_TWEETS_MSG = "No matching tweets found.";
 
@@ -28,22 +37,35 @@ public class Application extends Controller{
 
     private List<Status> foundTweets = null;
 
+    /**
+     * Class constructor
+     * @param formFactory required for form manipulation
+     * @param jpaApi required for persistence
+     */
     @Inject
     public Application(FormFactory formFactory, JPAApi jpaApi) {
         this.formFactory = formFactory;
         this.jpaApi = jpaApi;
     }
 
+    /**
+     * Web page index control method. Handles the search and pagination of the result based on the given parameters.
+     * @param search the string user wants to search for.
+     * @param count the count of tweets user selected to be displayed per page.
+     * @param page the page of tweets user is currently on.
+     * @return Result rendering either index page without any search results, the results twitter returned, or an
+     * error message.
+     */
     @Transactional
     public Result index(String search, int count, int page){
-        List<Status> pageTweets = null;
-        int maxPage = 1;
+        List<Status> pageTweets;
+        int maxPage;
 
         if(foundTweets == null){
             try {
                 this.searchTwitter(search);
             } catch (TwitterException e) {
-                ok(views.html.index.render(this.getSearchQueryList(), search, null, e.getMessage(), count, 1, 1));
+                return ok(views.html.index.render(this.getSearchQueryList(), search, null, e.getMessage(), count, 1, 1));
             }
         }
 
@@ -54,7 +76,6 @@ public class Application extends Controller{
 
             int from = ((page - 1) * count);
             int to = Math.min( (page * count), foundTweets.size());
-            System.out.println("Displaying tweets from:"+from+" to:"+to);
             pageTweets = foundTweets.subList(from, to);
         }else{
             return ok(views.html.index.render(this.getSearchQueryList(), search, null, NO_TWEETS_MSG, count, 1, 1));
@@ -63,6 +84,10 @@ public class Application extends Controller{
         return ok(views.html.index.render(this.getSearchQueryList(), search, pageTweets, null, count, page, maxPage));
     }
 
+    /**
+     * Executes the search of twitter .
+     * @return renders the index with either the search results, or an error message.
+     */
     @Transactional
     public Result doSearch() {
         String search = this.persistQueryAndGetText();
@@ -75,12 +100,21 @@ public class Application extends Controller{
         return redirect(routes.Application.index(search, count, 1));
     }
 
+    /**
+     * Checks the input string and calls twitter handler with it.
+     * @param search
+     * @throws TwitterException
+     */
     private void searchTwitter(String search) throws TwitterException {
         if(search != null) {
             foundTweets = TwitterHandler.getInstance().Search(search);
         }
     }
 
+    /**
+     * Slects all SearchQuery entities from database
+     * @return the list of all SearchQuery entities.
+     */
     @SuppressWarnings("unchecked")
     private List<SearchQuery> getSearchQueryList(){
         return jpaApi.em()
@@ -88,6 +122,10 @@ public class Application extends Controller{
                 .setMaxResults(HISTORY_DISPLAY_SIZE).getResultList();
     }
 
+    /**
+     * Adds the latest SearchQuery to the database and then returns its text.
+     * @return the string user entered to the search field.
+     */
     private String persistQueryAndGetText(){
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String text = requestData.get("text");
@@ -98,6 +136,10 @@ public class Application extends Controller{
         return text;
     }
 
+    /**
+     *
+     * @return the number of tweets per page the user specified in the count field.
+     */
     private int getCount(){
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String count = requestData.get("count");

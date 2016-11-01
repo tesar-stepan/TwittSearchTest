@@ -6,7 +6,7 @@ import javax.persistence.*;
 /**
  * Created by TesarStepan on 30. 10. 2016.
  *
- * Class used to save history of user search queries
+ * Class wrapping the queries users searched for.
  */
 @Entity
 public class SearchQuery {
