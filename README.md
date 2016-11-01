@@ -16,9 +16,8 @@ Project was developed with:
 Credit:
 - Background picture: Barnimages - http://barnimages.com/
 - Sticky footer: Bootstrap examples - http://getbootstrap.com/examples/sticky-footer/sticky-footer.css
-- Block level inputs: David James at Stackoverflow http://stackoverflow.com/a/11232628
+- Block level inputs: David James at Stackoverflow - http://stackoverflow.com/a/11232628
 - The Play 2 Framework crew for good tutorials and examples.
-- all of Stackoverflow community for everything that the tutorials do not cover. You are awesome. 
-
+- All of Stackoverflow community for everything that the tutorials do not cover. You are awesome. 
 
 This was my first project using the Play framework, so I might have missed few good practices. Sorry if there is anything too unusual in the code.
