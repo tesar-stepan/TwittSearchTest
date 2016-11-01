@@ -2,9 +2,47 @@
 @import java.text.DateFormat
 @import play.api.i18n.Messages
 
-@(searchResults: util.List[twitter4j.Status], search: String)
+@(
+        searchResults: util.List[twitter4j.Status],
+        search: String,
+        count: Int,
+        page: Int,
+        maxPage: Int
+)
+
+@defining(12) { pages_left => @pages_left }
+@defining(12) { pages_right => @pages_right }
 
     <h2>@Messages("title.search.results", search)</h2>
+
+    @if(maxPage > 1) {
+        <div class="row text-center">
+        @if(page == 1){
+            <button type="button" class="btn btn-lg btn-primary">1</button>
+        }else{
+            <a href="@routes.Application.index(search, count, 1)">
+                <button type="button" class="btn btn-lg btn-default">1</button>
+            </a>
+        }
+        @for(p <- Math.max(page - 3, 1) until Math.min(page + 3, maxPage-1)) {
+            @if(p == (page-1)){
+                <button type="button" class="btn btn-lg btn-primary">@(p+1)</button>
+            }else {
+                <a href="@routes.Application.index(search, count, p+1)">
+                    <button type="button" class="btn btn-lg btn-default">@(p+1)</button>
+                </a>
+            }
+        }
+
+        @if(page == maxPage){
+            <button type="button" class="btn btn-lg btn-primary">@maxPage</button>
+        }else{
+            <a href="@routes.Application.index(search, count, maxPage)">
+                <button type="button" class="btn btn-lg btn-default">@maxPage</button>
+            </a>
+        }
+        </div>
+    }
 
     @if(searchResults != null){
         @for(status <- searchResults) {

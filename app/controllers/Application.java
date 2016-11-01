@@ -37,12 +37,26 @@ public class Application extends Controller{
     public Result index(String search, int count, int page){
         List<Status> pageTweets = null;
         int maxPage = 1;
-        if(foundTweets != null) {
-            int from = ((page - 1) * count);
-            int to = Math.min( (page * count) - 1, foundTweets.size()-1);
-            pageTweets = foundTweets.subList(from, to);
-            maxPage = foundTweets.size()/count;
+
+        if(foundTweets == null){
+            try {
+                this.searchTwitter(search);
+            } catch (TwitterException e) {
+                ok(views.html.index.render(this.getSearchQueryList(), search, null, e.getMessage(), count, 1, 1));
+            }
         }
+
+        if(foundTweets != null) {
+            maxPage = (foundTweets.size())/count;
+
+            page = Math.min(page, maxPage);
+
+            int from = ((page - 1) * count);
+            int to = Math.min( (page * count), foundTweets.size());
+            System.out.println("Displaying tweets from:"+from+" to:"+to);
+            pageTweets = foundTweets.subList(from, to);
+        }
+
         return ok(views.html.index.render(this.getSearchQueryList(), search, pageTweets, null, count, page, maxPage));
     }
 
@@ -50,15 +64,18 @@ public class Application extends Controller{
     public Result doSearch() {
         String search = this.persistQueryAndGetText();
         int count = this.getCount();
-
-        if(search != null){
-            try {
-                foundTweets = TwitterHandler.getInstance().Search(search);
-            } catch (TwitterException e) {
-                return ok(views.html.index.render(this.getSearchQueryList(), search, null, e.getMessage(), count, 1, 1));
-            }
+        try{
+            this.searchTwitter(search);
+        }catch (TwitterException e) {
+            ok(views.html.index.render(this.getSearchQueryList(), search, null, e.getMessage(), count, 1, 1));
         }
         return redirect(routes.Application.index(search, count, 1));
+    }
+
+    private void searchTwitter(String search) throws TwitterException {
+        if(search != null) {
+            foundTweets = TwitterHandler.getInstance().Search(search);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -81,7 +98,12 @@ public class Application extends Controller{
     private int getCount(){
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String count = requestData.get("count");
-        return Integer.parseInt(count);
+
+        try {
+            return Integer.parseInt(count);
+        }catch(NumberFormatException e){
+            return DEFAULT_TWEET_PPG;
+        }
     }
 }
 
