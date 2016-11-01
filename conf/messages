@@ -1,7 +1,7 @@
 #titles
 title.main = TwittSearch
 title.recent.list = People recently searched for:
-title.search.results = Search results for {0}:
+title.search.results = Search results for " {0} ":
 
 #forms
 form.ph.search = Text to search for
