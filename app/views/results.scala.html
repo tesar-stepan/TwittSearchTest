@@ -10,32 +10,12 @@
         maxPage: Int
 )
 
-@pAddLeft = @{ Math.max(-(maxPage - (page+4)), 0) }
-@pAddRight = @{ Math.max(5-page, 0) }
-
     <h2>@Messages("title.search.results", search)</h2>
 
-    @if(maxPage > 1) {
-        <div class="row text-center">
 
-        @if(page > 5){
-            <span class="glyphicon glyphicon-circle-arrow-left"></span>
-        }
-        @for(p <- Math.max(page - 5 - pAddLeft, 0) until Math.min(page + 4 + pAddRight, maxPage)) {
-            @if(p == (page-1)){
-                <button type="button" class="btn btn-lg btn-primary">@(p+1)</button>
-            }else {
-                <a href="@routes.Application.index(search, count, p+1)">
-                    <button type="button" class="btn btn-lg btn-default">@(p+1)</button>
-                </a>
-            }
-        }
+    @pagination(search, count, page, maxPage)
 
-        @if(maxPage-page > 4){
-            <span class="glyphicon glyphicon-circle-arrow-right"></span>
-        }
-        </div>
-    }
+    <hr>
 
     @if(searchResults != null){
         @for(status <- searchResults) {
@@ -65,3 +45,7 @@
         </div>
         }
     }
+
+    <hr>
+
+    @pagination(search, count, page, maxPage)

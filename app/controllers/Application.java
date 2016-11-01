@@ -21,6 +21,7 @@ import java.util.List;
 public class Application extends Controller{
     private final static int HISTORY_DISPLAY_SIZE = 20;
     private final static int DEFAULT_TWEET_PPG = 15;
+    private final static String NO_TWEETS_MSG = "No matching tweets found.";
 
     private final FormFactory formFactory;
     private final JPAApi jpaApi;
@@ -46,8 +47,8 @@ public class Application extends Controller{
             }
         }
 
-        if(foundTweets != null) {
-            maxPage = (foundTweets.size())/count;
+        if(foundTweets != null && foundTweets.size() > 0) {
+            maxPage = Math.max((foundTweets.size())/count, 1);
 
             page = Math.min(page, maxPage);
 
@@ -55,6 +56,8 @@ public class Application extends Controller{
             int to = Math.min( (page * count), foundTweets.size());
             System.out.println("Displaying tweets from:"+from+" to:"+to);
             pageTweets = foundTweets.subList(from, to);
+        }else{
+            return ok(views.html.index.render(this.getSearchQueryList(), search, null, NO_TWEETS_MSG, count, 1, 1));
         }
 
         return ok(views.html.index.render(this.getSearchQueryList(), search, pageTweets, null, count, page, maxPage));

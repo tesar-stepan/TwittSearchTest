@@ -1,0 +1,56 @@
+@(
+        search: String,
+        count: Int,
+        page: Int,
+        maxPage: Int
+)
+
+@pAddLeft = @{ Math.max(-(maxPage - (page+4)), 0) }
+@pAddRight = @{ Math.max(5-page, 0) }
+
+@if(maxPage > 1) {
+    <div class="row text-center">
+
+        @if(page > 1){
+            <a href="@routes.Application.index(search, count, page-1)">
+        }
+                <button type="button" class="btn btn-lg btn-default"
+                @if(page == 1){
+                    style="visibility:hidden"
+                }
+                >
+                @if(page > 1) {
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                }
+                </button>
+        @if(page > 1){
+            </a>
+        }
+        @for(p <- Math.max(page - 5 - pAddLeft, 0) until Math.min(page + 4 + pAddRight, maxPage)) {
+            @if(p == (page-1)){
+                <button type="button" class="btn btn-lg btn-primary">@(p+1)</button>
+            }else {
+                <a href="@routes.Application.index(search, count, p+1)">
+                    <button type="button" class="btn btn-lg btn-default">@(p+1)</button>
+                </a>
+            }
+        }
+
+        @if(page < maxPage){
+            <a href="@routes.Application.index(search, count, page+1)">
+            }
+        <button type="button" class="btn btn-lg btn-default"
+            @if(page == maxPage){
+            style="visibility:hidden"
+            }
+        >
+        @if(page < maxPage) {
+            <span class="glyphicon glyphicon-arrow-right"></span>
+        }
+        </button>
+        @if(page < maxPage){
+        </a>
+        }
+
+    </div>
+}
