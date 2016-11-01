@@ -43,6 +43,12 @@ h2{
     overflow: hidden;
 }
 
+@media screen and (max-width: 768px){
+    .xs-top-pad{
+        padding-top: 20px;
+    }
+}
+
 /* Sticky footer styles | http://getbootstrap.com/examples/sticky-footer/sticky-footer.css
 -------------------------------------------------- */
 html {

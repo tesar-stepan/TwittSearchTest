@@ -15,9 +15,10 @@
 
     @pagination(search, count, page, maxPage)
 
+    @if(searchResults != null){
+
     <hr>
 
-    @if(searchResults != null){
         @for(status <- searchResults) {
         <div class="panel">
             <div class="panel-body">
@@ -44,8 +45,9 @@
             </div>
         </div>
         }
-    }
 
     <hr>
+
+    }
 
     @pagination(search, count, page, maxPage)
