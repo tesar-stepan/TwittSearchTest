@@ -61,7 +61,16 @@ public class Application extends Controller{
         List<Status> pageTweets;
         int maxPage;
 
-        if(foundTweets == null){
+        //case when there is no search query specified. Default index page is displayed.
+        if(search == null) {
+            return ok(views.html.index.render(this.getSearchQueryList(), null, null, null, count, page, 1));
+        }
+
+        //case when there is search query specified, but there are no foundTweets. This can occur when the search
+        //did not find any tweets, but also when user accessed the index in other way than clicking the 'search' button
+        //and being redirected afterwards. To handle the latter case, the search is called again here. If the search
+        //fails with an error, notification is displayed to the user.
+        if (foundTweets == null) {
             try {
                 this.searchTwitter(search);
             } catch (TwitterException e) {
@@ -69,24 +78,28 @@ public class Application extends Controller{
             }
         }
 
-        if(foundTweets != null && foundTweets.size() > 0) {
-            maxPage = Math.max((foundTweets.size())/count, 1);
+        //this is the case when some tweets were found, so the next part of code handles the correct pagination.
+        if (foundTweets != null && foundTweets.size() > 0) {
+            maxPage = Math.max((foundTweets.size()) / count, 1);
 
             page = Math.min(page, maxPage);
 
             int from = ((page - 1) * count);
-            int to = Math.min( (page * count), foundTweets.size());
+            int to = Math.min((page * count), foundTweets.size());
             pageTweets = foundTweets.subList(from, to);
-        }else{
+        } else {
+        //this is the case when search did happen, but no tweets were found. Notification is displayed.
             return ok(views.html.index.render(this.getSearchQueryList(), search, null, NO_TWEETS_MSG, count, 1, 1));
         }
 
+        //page with the found tweets is displayed.
         return ok(views.html.index.render(this.getSearchQueryList(), search, pageTweets, null, count, page, maxPage));
     }
 
     /**
      * Executes the search of twitter .
-     * @return renders the index with either the search results, or an error message.
+     * @return if the search is successful, the method fills appropriate variables and redirects to the index method.
+     * In case the search fails, it displays the index with appropriate error message.
      */
     @Transactional
     public Result doSearch() {
@@ -103,7 +116,7 @@ public class Application extends Controller{
     /**
      * Checks the input string and calls twitter handler with it.
      * @param search
-     * @throws TwitterException
+     * @throws TwitterException in case there was a problem executing the search.
      */
     private void searchTwitter(String search) throws TwitterException {
         if(search != null) {
@@ -112,7 +125,7 @@ public class Application extends Controller{
     }
 
     /**
-     * Slects all SearchQuery entities from database
+     * Selects all SearchQuery entities from database
      * @return the list of all SearchQuery entities.
      */
     @SuppressWarnings("unchecked")

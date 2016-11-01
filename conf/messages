@@ -7,7 +7,7 @@ title.search.results = Search results for {0}:
 form.ph.search = Text to search for
 form.ph.count = 15
 form.btn.search = Search Twitter!
-form.label.search = Search term
+form.label.search = Search query
 form.label.perpage = Tweets per page
 
 #error messages
